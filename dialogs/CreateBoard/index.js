@@ -17,8 +17,7 @@ export const CreateBoard = ({ onClose, onSubmit }) => {
             <DialogTitle id="form-dialog-title">Create a board</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    To subscribe to this website, please enter your email
-                    address here. We will send updates occasionally.
+                    Fill out the board content
                 </DialogContentText>
 
                 <TextField

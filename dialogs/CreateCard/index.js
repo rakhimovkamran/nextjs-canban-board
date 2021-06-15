@@ -16,10 +16,7 @@ export const CreateCard = ({ onClose, onSubmit }) => {
         <>
             <DialogTitle id="form-dialog-title">Create a card</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    To subscribe to this website, please enter your email
-                    address here. We will send updates occasionally.
-                </DialogContentText>
+                <DialogContentText>Fill out the card content</DialogContentText>
 
                 <TextField
                     autoFocus

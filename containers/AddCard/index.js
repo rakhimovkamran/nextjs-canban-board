@@ -37,7 +37,7 @@ export const AddCard = ({ tableID }) => {
     return (
         <>
             <S.Container onClick={handleOpenDialog}>
-                <I.Add onClick={() => window.alert(tableID)} />
+                <I.Add />
                 Card
             </S.Container>
 
