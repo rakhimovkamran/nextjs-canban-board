@@ -4,7 +4,7 @@ import { db } from "constants/firebase.config"
 import firebase from "firebase"
 import { useRouter } from "next/router"
 
-import { IconButton, Avatar, Dialog } from "@material-ui/core"
+import { IconButton, Avatar, Dialog, Menu, MenuItem } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 import { CreateBoard } from "dialogs/CreateBoard"
 import { CreateTable } from "dialogs/CreateTable"
@@ -23,6 +23,14 @@ export const Header = () => {
     const handleOpenDialog = () => setIsDialogOpen(true)
 
     const { state, dispatch } = useStateContext()
+
+    const [anchorElement, setAnchorElement] = useState(null)
+    const handleActionClick = (event) => {
+        setAnchorElement(event.currentTarget)
+    }
+    const handleCloseActionsMenu = () => {
+        setAnchorElement(null)
+    }
 
     const [boardDetail, isDetailsLoading] = useDocument(
         db.collection("boards").doc(state.boardID || "NULL")
@@ -50,6 +58,12 @@ export const Header = () => {
                 })
             setIsDialogOpen(false)
         }
+    }
+
+    const deleteCurrentBoard = () => {
+        db.collection("boards").doc(state.boardID).delete()
+
+        handleBack()
     }
 
     const handleBack = () => {
@@ -86,9 +100,23 @@ export const Header = () => {
                 </S.Search>
 
                 <S.Extra>
-                    <IconButton>
-                        <I.More />
-                    </IconButton>
+                    {state.boardID && (
+                        <IconButton onClick={handleActionClick}>
+                            <I.More />
+
+                            <Menu
+                                id="board-actions-menu"
+                                anchorEl={anchorElement}
+                                keepMounted
+                                open={Boolean(anchorElement)}
+                                onClose={handleCloseActionsMenu}
+                            >
+                                <MenuItem onClick={deleteCurrentBoard}>
+                                    Delete Board
+                                </MenuItem>
+                            </Menu>
+                        </IconButton>
+                    )}
 
                     <IconButton onClick={handleOpenDialog}>
                         <I.Add />

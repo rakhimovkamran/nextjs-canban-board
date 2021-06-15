@@ -17,15 +17,14 @@ export const CreateTable = ({ onClose, onSubmit }) => {
             <DialogTitle id="form-dialog-title">Create a table</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    To subscribe to this website, please enter your email
-                    address here. We will send updates occasionally.
+                    Write the name of the table
                 </DialogContentText>
 
                 <TextField
                     autoFocus
                     margin="dense"
                     id="title"
-                    label="Title of board"
+                    label="Title of table"
                     fullWidth
                     onChange={({ target }) =>
                         setTableState({

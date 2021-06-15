@@ -1,4 +1,4 @@
-import { IconButton, LinearProgress } from "@material-ui/core"
+import { IconButton, LinearProgress, Menu, MenuItem } from "@material-ui/core"
 import { db } from "constants/firebase.config"
 import { useCollection } from "react-firebase-hooks/firestore"
 
@@ -11,9 +11,18 @@ import { Card } from "components/Card"
 import { useStateContext } from "context"
 
 import { DropTarget } from "react-drag-drop-container"
+import { useState } from "react"
 
 export const Table = ({ title, id }) => {
     const { state } = useStateContext()
+
+    const [anchorElement, setAnchorElement] = useState(null)
+    const handleActionClick = (event) => {
+        setAnchorElement(event.currentTarget)
+    }
+    const handleCloseActionsMenu = () => {
+        setAnchorElement(null)
+    }
 
     const [cards, isCardsLoading] = useCollection(
         db
@@ -36,6 +45,14 @@ export const Table = ({ title, id }) => {
             })
     }
 
+    const deleteCurrentTable = () => {
+        db.collection("boards")
+            .doc(state.boardID)
+            .collection("tables")
+            .doc(id)
+            .delete()
+    }
+
     return (
         <S.Container>
             <S.Info>
@@ -44,8 +61,19 @@ export const Table = ({ title, id }) => {
                     <S.CardsCount>{cards?.docs.length || 0}</S.CardsCount>
                 </S.Meta>
 
-                <IconButton>
+                <IconButton onClick={handleActionClick}>
                     <I.More />
+                    <Menu
+                        id="table-actions-menu"
+                        anchorEl={anchorElement}
+                        keepMounted
+                        open={Boolean(anchorElement)}
+                        onClose={handleCloseActionsMenu}
+                    >
+                        <MenuItem onClick={deleteCurrentTable}>
+                            Delete Table
+                        </MenuItem>
+                    </Menu>
                 </IconButton>
             </S.Info>
 
