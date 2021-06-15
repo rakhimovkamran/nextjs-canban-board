@@ -1,16 +1,34 @@
 import Head from "next/head"
+import { useCollection } from "react-firebase-hooks/firestore"
+import { db } from "constants/firebase.config"
 
-export default function Home() {
+import { S } from "./index/index.styled"
+import { Board } from "components/Board"
+import { Wrapper } from "containers/Wrapper"
+
+export default function Boards() {
+    const [boards] = useCollection(db.collection("boards"))
+
     return (
-        <div>
+        <Wrapper>
             <Head>
-                <title>Tournament</title>
-                <meta
-                    name="description"
-                    content="Tournament board app like Trello"
-                />
-                <link rel="icon" href="/favicon.ico" />
+                <title>Boards</title>
             </Head>
-        </div>
+
+            <S.Container>
+                {boards?.docs.map((board) => {
+                    const { title, description } = board.data()
+
+                    return (
+                        <Board
+                            key={board.id}
+                            id={board.id}
+                            title={title}
+                            description={description}
+                        />
+                    )
+                })}
+            </S.Container>
+        </Wrapper>
     )
 }
